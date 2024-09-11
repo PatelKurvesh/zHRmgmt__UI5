@@ -1,7 +1,120 @@
-<mvc:View controllerName="zhrmgmtui5.controller.View1"
-    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-        <content />
+<mvc:View
+    controllerName="zhrmgmtui5.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:filterbar="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        id="page"
+        title="{i18n>title}"
+    >
+        <content>
+            <filterbar:FilterBar
+                id="filterbar"
+                persistencyKey="myPersKey"
+                useToolbar="false"
+                search=".onSearch"
+                afterVariantLoad=".onAfterVariantLoad"
+            >
+                <filterbar:filterGroupItems>
+                    <filterbar:FilterGroupItem
+                        name="SAP Module Type"
+                        label="SAP Module Type"
+                        groupName="Group1"
+                        visibleInFilterBar="true"
+                    >
+                        <filterbar:control>
+                            <ComboBox
+                                placeholder="Select SAP Module Type"
+                                selectionChange="onModuleTypeChange"
+                            >
+                                <core:Item text="Technical" />
+                                <core:Item text="Functional" />
+                            </ComboBox>
+                        </filterbar:control>
+                    </filterbar:FilterGroupItem>
+
+                    <filterbar:FilterGroupItem
+                        name="SAP Module"
+                        label="SAP Module"
+                        groupName="Group2"
+                        visibleInFilterBar="true"
+                        visible="{=${JSONModel>/bVisible} ? true:false}"
+                    >
+                        <filterbar:control>
+                            <ComboBox
+                                items="{JSONModel>/Module}"
+                                placeholder="Select SAP Module"
+                                selectionChange="onProjectChange"
+                            >
+                                <core:Item
+                                    key="{JSONModel>MODULE_ID}"
+                                    text="{JSONModel>MODULE_NAME}"
+                                />
+                            </ComboBox>
+                        </filterbar:control>
+                    </filterbar:FilterGroupItem>
+                </filterbar:filterGroupItems>
+                <Button
+                    text="Add New Module"
+                    press="onAddNewModule"
+                />
+            </filterbar:FilterBar>
+
+            <Table
+                id="projectTable"
+                class="sapUiResponsiveContentPadding"
+                items="{JSONModel>/Employee}"
+                growing="true"
+                growingThreshold="50"
+                selectionChange="onSelectionChange"
+                updateFinished="onUpdateFinished"
+            >
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <!-- <Title text="{i18n>countTitle} ({EmployeeLicenseAdmin>/iCount})"/> -->
+                        <ToolbarSpacer />
+                        <Button
+                            text="Delete"
+                            icon="sap-icon://delete"
+                            type="Emphasized"
+                            press="onDelete"
+                        />
+                        <Button
+                            text="Create"
+                            icon="sap-icon://add"
+                            type="Emphasized"
+                            press="onCreateClick"
+                        />
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column>
+                        <Text text="Employee ID" />
+                    </Column>
+                    <Column>
+                        <Text text="Employee Name" />
+                    </Column>
+                    <Column>
+                        <Text text="Employee Age" />
+                    </Column>
+                    <Column>
+                        <Text text="Employee Module" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{Employee>EMP_ID}" />
+                            <Text text="{Employee>EMP_NAME}" />
+                            <Text text="{Employee>EMP_AGE}" />
+                            <Text text="{Employee>EMP_MODULE_MODULE_ID}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
     </Page>
 </mvc:View>

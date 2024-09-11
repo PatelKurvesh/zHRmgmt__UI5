@@ -1,0 +1,73 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+	xmlns:u="sap.ui.unified"
+>
+    <Dialog title="Create Employee" titleAlignment="Center">
+        <form:SimpleForm>
+            <!-- <Label text="Employee ID" />
+            <Input
+                type="Text"
+                required="true"
+                id="INP_ID"
+            /> -->
+
+            <Label text="Employee Name" />
+            <Input type="Text" id="INP_NAME" />
+
+            <Label text="Employee AGE" />
+            <Input type="Text" id="INP_AGE"/>
+
+            
+
+           
+
+            <Label text="Employee Module Type" />
+            <ComboBox  id="INP_MODULE_TYPE" selectionChange="dModuleType">
+                <core:Item text="Technical"/>
+                <core:Item text="Functional"/>
+            </ComboBox>
+
+            <Label text="Employee Module" />
+            <ComboBox items="{JSONModel>/DialogModule}"  id="INP_MODULE">
+                <core:Item 
+                key="{JSONModel>MODULE_CODE}"
+                text="{JSONModel>MODULE_NAME}"/>
+                
+            </ComboBox>
+            
+        </form:SimpleForm>
+
+        
+
+        <l:VerticalLayout id="fileUploder">
+		<u:FileUploader
+			id="fileUploader"
+			name="myFileUpload"
+			uploadUrl="upload/"
+			tooltip="Upload your file to the local server"
+			uploadComplete="handleUploadComplete"/>
+		<Button
+			text="Upload File"
+			press="handleDialogUploadPress"/>
+	</l:VerticalLayout>
+
+        <buttons>
+            <Button
+                text="Save"
+                icon="sap-icon://save"
+                press="onAddNewEmp"
+                type="Emphasized"
+            />
+            <Button
+                id="idCancelPop"
+                icon="sap-icon://decline"
+                text="Cancel"
+                type="Negative"
+                press="onCancelDialog"
+            />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>
