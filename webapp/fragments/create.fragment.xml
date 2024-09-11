@@ -46,7 +46,7 @@
 		<u:FileUploader
 			id="fileUploader"
 			name="myFileUpload"
-			uploadUrl="upload/"
+			uploadUrl="https://a599057ctrial-dev-zhrmgmt--odata-srv.cfapps.us10-001.hana.ondemand.com/v2/odata/EMPLOYEE"
 			tooltip="Upload your file to the local server"
 			uploadComplete="handleUploadComplete"/>
 		<Button

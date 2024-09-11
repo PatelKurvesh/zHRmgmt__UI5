@@ -9,6 +9,7 @@ sap.ui.define([
             onInit: function () {
                 this.getModel().setUseBatch(false);
                 this.getModel("JSONModel").setProperty("/bVisible", false);
+                this.readEmployee();
                 // this.readModuleDropDown();
             },
 
@@ -44,8 +45,20 @@ sap.ui.define([
                 })
             },
 
+            readEmployee:function(){
+                var oModel = this.getModel();
+                oModel.read("/EMPLOYEE",{
+                    success:function(odata){
+                        this.getModel("JSONModel").setProperty("/Employee",odata.results);
+                        
+                    }.bind(this),
+                    error:function(error){
+
+                    }
+                })
+            },
+
             onCreateClick: function () {
-                debugger;
                 if (!this.Dialog) {
                     this.Dialog = sap.ui.xmlfragment("zhrmgmtui5.fragments.create", this);
                     this.getView().addDependent(this.Dialog);
@@ -61,7 +74,7 @@ sap.ui.define([
                 }
             },
 
-            onCancelDialog : function(){
+            onCancelDialog: function () {
                 this.Dialog.close();
                 if (this.Dialog) {
                     this.Dialog.destroy();
@@ -87,9 +100,39 @@ sap.ui.define([
 
             },
 
-            handleDialogUploadPress : function(oEvent){
+            handleDialogUploadPress: function (oEvent) {
                 debugger;
             },
+            
+
+            handleDialogUploadPress: function () {
+                var oFileUploader = sap.ui.getCore().byId("fileUploader");
+                var oFile = oFileUploader.oFileUpload.files[0]; // Get the selected file
+
+                if (oFile) {
+                    var oFileReader = new FileReader();
+                    oFileReader.onload = (e) => {
+                        debugger;
+                        this.sImgStr = e.target.result.split(",")[1];
+                        this.sImg = e.target.result;
+                        var oImgObj = {
+                            EMP_IMG: this.sImgStr,
+                            IMG_URL: this.sImg
+                        }
+                        this.getModel().create("/EMPLOYEE", oImgObj, {
+                            success: function (odata) {
+                                debugger;
+                            }.bind(this),
+                            error: function (error) {
+                                debugger;
+                            }
+                        })
+
+                    };
+                    oFileReader.readAsDataURL(oFile);
+                }
+            }
+
 
 
         });

@@ -95,6 +95,9 @@
                         <Text text="Employee ID" />
                     </Column>
                     <Column>
+                        <Text text="Employee Image" />
+                    </Column>
+                    <Column>
                         <Text text="Employee Name" />
                     </Column>
                     <Column>
@@ -103,14 +106,17 @@
                     <Column>
                         <Text text="Employee Module" />
                     </Column>
+                    
                 </columns>
                 <items>
                     <ColumnListItem>
                         <cells>
-                            <Text text="{Employee>EMP_ID}" />
-                            <Text text="{Employee>EMP_NAME}" />
-                            <Text text="{Employee>EMP_AGE}" />
-                            <Text text="{Employee>EMP_MODULE_MODULE_ID}" />
+                            <Text text="{JSONModel>EMP_ID}" />
+                            <Image src="{JSONModel>IMG_URL}" width="15%" height="15%"></Image>
+                            <Text text="{JSONModel>EMP_NAME}" />
+                            <Text text="{JSONModel>EMP_AGE}" />
+                            <Text text="{JSONModel>EMP_MODULE_MODULE_ID}" />
+                            
                         </cells>
                     </ColumnListItem>
                 </items>
