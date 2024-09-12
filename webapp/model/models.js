@@ -13,7 +13,20 @@ function (JSONModel, Device) {
             var oModel = new JSONModel(Device);
             oModel.setDefaultBindingMode("OneWay");
             return oModel;
+        },
+
+        _createNewEmployee:function(){
+            return {
+
+                "EMP_NAME":"",
+                "EMP_AGE":"",
+                "EMP_MODULE_MODULE_ID":"",
+                "EMP_IMG":"",
+                "IMG_URL":""
+            }
         }
+
+
     };
 
 });

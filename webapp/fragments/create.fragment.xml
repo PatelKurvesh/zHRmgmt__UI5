@@ -7,22 +7,12 @@
 >
     <Dialog title="Create Employee" titleAlignment="Center">
         <form:SimpleForm>
-            <!-- <Label text="Employee ID" />
-            <Input
-                type="Text"
-                required="true"
-                id="INP_ID"
-            /> -->
 
             <Label text="Employee Name" />
-            <Input type="Text" id="INP_NAME" />
+            <Input type="Text" id="INP_NAME" value="{JSONModel>/CreateEmployee/EMP_NAME}"/>
 
             <Label text="Employee AGE" />
-            <Input type="Text" id="INP_AGE"/>
-
-            
-
-           
+            <Input type="Text" id="INP_AGE" value="{JSONModel>/CreateEmployee/EMP_AGE}"/>          
 
             <Label text="Employee Module Type" />
             <ComboBox  id="INP_MODULE_TYPE" selectionChange="dModuleType">
@@ -31,9 +21,9 @@
             </ComboBox>
 
             <Label text="Employee Module" />
-            <ComboBox items="{JSONModel>/DialogModule}"  id="INP_MODULE">
+            <ComboBox items="{JSONModel>/DialogModule}"  id="INP_MODULE" value="{JSONModel>/CreateEmployee/EMP_MODULE_MODULE_ID}">
                 <core:Item 
-                key="{JSONModel>MODULE_CODE}"
+                key="{JSONModel>MODULE_ID}"
                 text="{JSONModel>MODULE_NAME}"/>
                 
             </ComboBox>

@@ -68,7 +68,7 @@
                 class="sapUiResponsiveContentPadding"
                 items="{JSONModel>/Employee}"
                 growing="true"
-                growingThreshold="50"
+                growingThreshold="5"
                 selectionChange="onSelectionChange"
                 updateFinished="onUpdateFinished"
             >
@@ -95,7 +95,7 @@
                         <Text text="Employee ID" />
                     </Column>
                     <Column>
-                        <Text text="Employee Image" />
+                        <Text class="circularImg" text="Employee Image" />
                     </Column>
                     <Column>
                         <Text text="Employee Name" />
@@ -112,7 +112,8 @@
                     <ColumnListItem>
                         <cells>
                             <Text text="{JSONModel>EMP_ID}" />
-                            <Image src="{JSONModel>IMG_URL}" width="15%" height="15%"></Image>
+                            <!-- <Image class="circularImg" src="{JSONModel>IMG_URL}" width="2em" height="2em" ></Image> -->
+                            <Avatar src="{JSONModel>IMG_URL}" />
                             <Text text="{JSONModel>EMP_NAME}" />
                             <Text text="{JSONModel>EMP_AGE}" />
                             <Text text="{JSONModel>EMP_MODULE_MODULE_ID}" />

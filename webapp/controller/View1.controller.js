@@ -1,8 +1,9 @@
 sap.ui.define([
     "./App.controller",
-    "sap/m/MessageToast"
+    "sap/m/MessageToast",
+    "../model/models"
 ],
-    function (BaseController, MessageToast) {
+    function (BaseController, MessageToast, Models) {
         "use strict";
 
         return BaseController.extend("zhrmgmtui5.controller.View1", {
@@ -45,14 +46,15 @@ sap.ui.define([
                 })
             },
 
-            readEmployee:function(){
+            readEmployee: function () {
                 var oModel = this.getModel();
-                oModel.read("/EMPLOYEE",{
-                    success:function(odata){
-                        this.getModel("JSONModel").setProperty("/Employee",odata.results);
-                        
+                oModel.read("/EMPLOYEE", {
+                    success: function (oData) {
+                        debugger;
+                        this.getModel("JSONModel").setProperty("/Employee", oData.results);
+
                     }.bind(this),
-                    error:function(error){
+                    error: function (error) {
 
                     }
                 })
@@ -60,6 +62,8 @@ sap.ui.define([
 
             onCreateClick: function () {
                 if (!this.Dialog) {
+                    var oEmployeePayload = Models._createNewEmployee();
+                    this.getModel("JSONModel").setProperty("/CreateEmployee", oEmployeePayload);
                     this.Dialog = sap.ui.xmlfragment("zhrmgmtui5.fragments.create", this);
                     this.getView().addDependent(this.Dialog);
                     this.Dialog.open();
@@ -100,10 +104,23 @@ sap.ui.define([
 
             },
 
-            handleDialogUploadPress: function (oEvent) {
+            onAddNewEmp: function (oEvent) {
                 debugger;
+                var oPayload = this.getModel("JSONModel").getProperty("/CreateEmployee");
+                oPayload.EMP_IMG = this.sImgStr;
+                oPayload.IMG_URL = this.sBase64Img;
+                var oModel = this.getModel();
+                oModel.create("/EMPLOYEE", oPayload, {
+                    success: function (odata) {
+                        debugger;
+                        this.onCancelDialog();
+                    }.bind(this),
+                    error(error) {
+                        debugger;
+                    }
+                })
             },
-            
+
 
             handleDialogUploadPress: function () {
                 var oFileUploader = sap.ui.getCore().byId("fileUploader");
@@ -114,19 +131,7 @@ sap.ui.define([
                     oFileReader.onload = (e) => {
                         debugger;
                         this.sImgStr = e.target.result.split(",")[1];
-                        this.sImg = e.target.result;
-                        var oImgObj = {
-                            EMP_IMG: this.sImgStr,
-                            IMG_URL: this.sImg
-                        }
-                        this.getModel().create("/EMPLOYEE", oImgObj, {
-                            success: function (odata) {
-                                debugger;
-                            }.bind(this),
-                            error: function (error) {
-                                debugger;
-                            }
-                        })
+                        this.sBase64Img = e.target.result;
 
                     };
                     oFileReader.readAsDataURL(oFile);

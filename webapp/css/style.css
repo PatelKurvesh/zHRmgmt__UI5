@@ -3,3 +3,7 @@
 #fileUploder{
     margin-left: 5%;
 }
+
+.circularImg{
+    object-fit: cover;
+}
