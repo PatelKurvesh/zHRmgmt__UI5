@@ -1,0 +1,12 @@
+<mvc:View xmlns:m="sap.m"
+    controllerName="management.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.uxap"
+    xmlns:core="sap.ui.core"
+    xmlns:semantic="sap.f.semantic"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout"
+	xmlns:upload="sap.m.upload">
+
+    </mvc:View>

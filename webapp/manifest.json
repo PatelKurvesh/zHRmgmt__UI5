@@ -118,6 +118,13 @@
           "target": [
             "TargetView1"
           ]
+        },
+        {
+          "name": "Detail",
+          "pattern": "Employee({Id})",
+          "target": [
+            "Detail"
+          ]
         }
       ],
       "targets": {
@@ -127,6 +134,13 @@
           "clearControlAggregation": false,
           "viewId": "View1",
           "viewName": "View1"
+        },
+        "Detail":{
+          "viewName": "Detail",
+          "viewType":"XML",
+          "transition":"slide",
+          "clearControlAggregation": false,
+          "viewId": "Detail"
         }
       }
     },

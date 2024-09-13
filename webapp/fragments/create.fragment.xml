@@ -8,6 +8,9 @@
     <Dialog title="Create Employee" titleAlignment="Center">
         <form:SimpleForm>
 
+            <Label text="Employee ID" />
+            <Input type="Text" id="INP_ID" value="Employee ID will Be Auto Generated" enabled="false"/>
+
             <Label text="Employee Name" />
             <Input type="Text" id="INP_NAME" value="{JSONModel>/CreateEmployee/EMP_NAME}"/>
 
@@ -24,7 +27,7 @@
             <ComboBox items="{JSONModel>/DialogModule}"  id="INP_MODULE" value="{JSONModel>/CreateEmployee/EMP_MODULE_MODULE_ID}">
                 <core:Item 
                 key="{JSONModel>MODULE_ID}"
-                text="{JSONModel>MODULE_NAME}"/>
+                text="{JSONModel>MODULE_NAME} {JSONModel>/MODULE_CODE}"/>
                 
             </ComboBox>
             
@@ -34,6 +37,7 @@
 
         <l:VerticalLayout id="fileUploder">
 		<u:FileUploader
+            multiple="true"
 			id="fileUploader"
 			name="myFileUpload"
 			uploadUrl="https://a599057ctrial-dev-zhrmgmt--odata-srv.cfapps.us10-001.hana.ondemand.com/v2/odata/EMPLOYEE"
@@ -46,6 +50,7 @@
 
         <buttons>
             <Button
+                id="saveBtn"
                 text="Save"
                 icon="sap-icon://save"
                 press="onAddNewEmp"

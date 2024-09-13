@@ -57,10 +57,10 @@
                         </filterbar:control>
                     </filterbar:FilterGroupItem>
                 </filterbar:filterGroupItems>
-                <Button
+                <!-- <Button
                     text="Add New Module"
                     press="onAddNewModule"
-                />
+                /> -->
             </filterbar:FilterBar>
 
             <Table
@@ -68,20 +68,21 @@
                 class="sapUiResponsiveContentPadding"
                 items="{JSONModel>/Employee}"
                 growing="true"
-                growingThreshold="5"
+                growingThreshold="{JSONModel>/thresholdCount}"
                 selectionChange="onSelectionChange"
                 updateFinished="onUpdateFinished"
+                mode="SingleSelectMaster"
             >
                 <headerToolbar>
                     <OverflowToolbar>
-                        <!-- <Title text="{i18n>countTitle} ({EmployeeLicenseAdmin>/iCount})"/> -->
+                        <Title text="Employee ( {JSONModel>/iCount}/{JSONModel>/iEmpCount} )" />
                         <ToolbarSpacer />
-                        <Button
+                        <!-- <Button
                             text="Delete"
                             icon="sap-icon://delete"
                             type="Emphasized"
                             press="onDelete"
-                        />
+                        /> -->
                         <Button
                             text="Create"
                             icon="sap-icon://add"
@@ -95,7 +96,10 @@
                         <Text text="Employee ID" />
                     </Column>
                     <Column>
-                        <Text class="circularImg" text="Employee Image" />
+                        <Text
+                            class="circularImg"
+                            text="Employee Image"
+                        />
                     </Column>
                     <Column>
                         <Text text="Employee Name" />
@@ -106,7 +110,6 @@
                     <Column>
                         <Text text="Employee Module" />
                     </Column>
-                    
                 </columns>
                 <items>
                     <ColumnListItem>
@@ -117,11 +120,21 @@
                             <Text text="{JSONModel>EMP_NAME}" />
                             <Text text="{JSONModel>EMP_AGE}" />
                             <Text text="{JSONModel>EMP_MODULE_MODULE_ID}" />
-                            
                         </cells>
                     </ColumnListItem>
                 </items>
             </Table>
         </content>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button
+                    icon="sap-icon://drill-down"
+                    text="Load More Employee"
+                    type="Emphasized"
+                    press="onLoadMoreEmployeePress"
+                />
+            </OverflowToolbar>
+        </footer>
     </Page>
 </mvc:View>

@@ -20,7 +20,7 @@ function (JSONModel, Device) {
 
                 "EMP_NAME":"",
                 "EMP_AGE":"",
-                "EMP_MODULE_MODULE_ID":"",
+                "EMP_MODULE_MODULE_ID":'',
                 "EMP_IMG":"",
                 "IMG_URL":""
             }
