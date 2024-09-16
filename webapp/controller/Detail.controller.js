@@ -1,13 +1,20 @@
 sap.ui.define([
     "./App.controller",
     "sap/ui/model/json/JSONModel",
-    "zhrmgmt__ui5/model/models"
+    "../model/models"
 ],
     function (BaseController, JSONModel, Models) {
         "use strict";
 
-        return BaseController.extend("zhrmgmt__ui5.controller.Detail", {
-            
+        return BaseController.extend("zhrmgmtui5.controller.Detail", {
+
+            onInit: function () {
+                this.getRouter().getRoute("Detail").attachPatternMatched(this._onObjectMatched, this);
+            },
+
+            _onObjectMatched: function () {
+                sap.ui.core.BusyIndicator.hide()
+            },
 
         });
     });

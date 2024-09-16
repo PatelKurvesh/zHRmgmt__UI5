@@ -10,8 +10,8 @@ sap.ui.define([
             onInit: function () {
                 this.getModel().setUseBatch(false);
                 this.getModel("JSONModel").setProperty("/bVisible", false);
-                this.readModuleDropDown();
                 this.readEmployee();
+                this.readModuleDropDown();
                 this.readEmployeeCount()
             },
 
@@ -54,14 +54,13 @@ sap.ui.define([
                         this.getModel("JSONModel").setProperty("/iEmpCount", odata);
                     }.bind(this),
                     error: function (error) {
-                        // MessageToast.show("oData Service Not Working!!")
+                        MessageToast.show("oData Service Not Working!!")
                     }
                 })
             },
 
             readEmployee: function () {
                 var oModel = this.getModel();
-                // sap.ui.core.BusyIndicator.show();
                 this.byId("projectTable").setBusy(true);
                 oModel.read("/EMPLOYEE", {
                     "urlParameters": {
@@ -81,23 +80,24 @@ sap.ui.define([
             },
 
             onLoadMoreEmployeePress: function () {
-                var iSkipCount = this.getModel("JSONModel").getProperty("/thresholdCount");
-                var oModel = this.getModel();
-                this.byId("projectTable").setBusy(true);
-                oModel.read("/EMPLOYEE", {
+               var oTable = this.byId("projectTable");
+               oTable.setBusyIndicatorDelay(0);
+               oTable.setBusy(true);
+                this.getModel().read("/EMPLOYEE", {
                     "urlParameters": {
                         "$top": 5,
-                        "$skip": iSkipCount
+                        "$skip": this.getModel("JSONModel").getProperty("/thresholdCount"),
                     },
                     success: function (oData) {
-                        debugger;
-                        var aResults = oData.results;
                         var oJSONModel = this.getModel("JSONModel");
                         this.byId("projectTable").setBusy(false);
                         var aEmployee = oJSONModel.getProperty("/Employee");
-                        for (var r in aResults) {
-                            aEmployee.push(aResults[r]);
+                        for (var r in oData.results) {
+                            aEmployee.push(oData.results[r]);
                         }
+                        aEmployee.sort((a, b) => {
+                            return a.EMP_ID - b.EMP_ID
+                        });
                         oJSONModel.setProperty("/thresholdCount", aEmployee.length);
                         oJSONModel.refresh();
                     }.bind(this),
@@ -209,14 +209,19 @@ sap.ui.define([
             },
 
 
-            onSelectionChange: function (oEvent) {
+            onSelectionChange: async function (oEvent) {
                 debugger;
+                sap.ui.core.BusyIndicator.show(0);
                 var aFilters = [];
                 var oSelectedEmployee = oEvent.mParameters.listItem.getBindingContext("JSONModel").getObject();
                 var oEmployeeFilter = this.getFilter("EMP_ID", sap.ui.model.FilterOperator.EQ, oSelectedEmployee.EMP_ID);
                 aFilters.push(oEmployeeFilter);
-                this.readDataWithParameter("/EMPLOYEE", "/SelectedEmployee", aFilters);
-            }
+                var iEmployeeId = oSelectedEmployee.EMP_ID;
+                await this.readDataWithParameter("/EMPLOYEE", "/SelectedEmployee", aFilters);
+                this.getRouter().navTo("Detail", { Id: iEmployeeId });
+            },
+
+            
 
 
         });

@@ -26,24 +26,17 @@ sap.ui.define(
       },
 
       readDataWithParameter: function (sEntitySet, sProperty, oFilters) {
-        this.getModel().read(sEntitySet, {
+        return new Promise(function (resolve, reject) {
+          this.getModel().read(sEntitySet, {
             filters: [oFilters],
-            urlParameters: {
-                // $expand: parameter
-            },
             success: function (oData) {
-                debugger;
-
-                // if (oData.results[0].URL) {
-                //     if (oData.results[0].URL !== "") {
-                //         oData.results[0].URL = "/v2" + oData.results[0].URL;
-                //     }
-                // }
-                oData.results ? this.setProperty(sProperty, oData.results[0]) : this.setProperty(sProperty, oData);
+              oData.results ? this.setProperty(sProperty, oData.results[0]) : this.setProperty(sProperty, oData);
+              resolve(oData);
             }.bind(this),
-            error: function (oError) {}
-        });
-    }
+            error: function (oError) { }
+          });
+        }.bind(this));
+      }
     });
   }
 );

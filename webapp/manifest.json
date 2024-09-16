@@ -130,7 +130,7 @@
       "targets": {
         "TargetView1": {
           "viewType": "XML",
-          "transition": "slide",
+          "transition": "flip",
           "clearControlAggregation": false,
           "viewId": "View1",
           "viewName": "View1"

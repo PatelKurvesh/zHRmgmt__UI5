@@ -1,12 +1,111 @@
 <mvc:View xmlns:m="sap.m"
-    controllerName="management.controller.Detail"
+    controllerName="zhrmgmtui5.controller.Detail"
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
     xmlns="sap.uxap"
     xmlns:core="sap.ui.core"
     xmlns:semantic="sap.f.semantic"
 	xmlns:form="sap.ui.layout.form"
-	xmlns:l="sap.ui.layout"
+	xmlns:layout="sap.ui.layout"
 	xmlns:upload="sap.m.upload">
+
+     <ObjectPageLayout id="ObjectPageLayout"
+		showTitleInHeaderContent="true"
+		showEditHeaderButton="true"
+		editHeaderButtonPress="handleEditBtnPress"
+		upperCaseAnchorBar="false">
+		<headerTitle>
+			<ObjectPageDynamicHeaderTitle>
+				
+				<expandedHeading>
+					<m:HBox>
+						<m:Title text="{JSONModel>/SelectedEmployee/EMP_NAME}" wrapping="true"/>
+					</m:HBox>
+				</expandedHeading>
+
+				<snappedHeading>
+					<m:FlexBox  fitContainer="true" alignItems="Center">
+						<m:Avatar src="{JSONModel>/SelectedEmployee/IMG_URL}" class="sapUiTinyMarginEnd"/>
+						<m:Title text="{JSONModel>/SelectedEmployee/EMP_NAME}" wrapping="true"/>
+					</m:FlexBox>
+				</snappedHeading>
+
+				<actions>
+					<m:OverflowToolbarButton icon="sap-icon://edit" text="edit header" type="Emphasized" tooltip="edit">
+						<m:layoutData>
+							<m:OverflowToolbarLayoutData priority="NeverOverflow"/>
+						</m:layoutData>
+					</m:OverflowToolbarButton>
+					<m:OverflowToolbarButton icon="sap-icon://pull-down" text="show section" type="Emphasized" tooltip="pull-down"/>
+					<m:OverflowToolbarButton icon="sap-icon://show" text="show state" tooltip="show"/>
+					<m:Button text="Toggle Footer" press="toggleFooter"/>
+				</actions>
+			</ObjectPageDynamicHeaderTitle>
+		</headerTitle>
+
+		<headerContent>
+			<m:FlexBox wrap="Wrap">
+				<m:Avatar class="sapUiSmallMarginEnd" src="{JSONModel>/SelectedEmployee/IMG_URL}"  displaySize="XL" />
+
+					<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+						<m:Link text="+33 6 4512 5158"/>
+						<m:Link text="vsdtechno@sap.com"/>
+					</layout:VerticalLayout>
+
+					<layout:HorizontalLayout class="sapUiSmallMarginBeginEnd">
+						<m:Image src="./test-resources/sap/uxap/images/linkedin.png" height="1em" width="1em" />
+						<m:Image src="./test-resources/sap/uxap/images/Twitter.png" class="sapUiSmallMarginBegin"/>
+					</layout:HorizontalLayout>
+
+				<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+					<m:Label text="Hello! I am {JSONModel>/SelectedEmployee/EMP_NAME} and I use SAP"/>
+					<m:VBox>
+						<m:Label text="Achieved goals"/>
+						<m:ProgressIndicator percentValue="70" displayValue="70%"/>
+					</m:VBox>
+				</layout:VerticalLayout>
+
+				
+			</m:FlexBox>
+		</headerContent>
+
+		<sections>
+			<ObjectPageSection titleUppercase="false" id="goalsSection" title="Employee Details">
+				<heading>
+					<m:MessageStrip text="All Employess are SAP CAPM Developer" type="Information" />
+				</heading>
+				<subSections>
+					<ObjectPageSubSection>
+						<blocks>
+							<m:Text text="Delevoped by Kurvesh Patel"></m:Text>
+
+                            <m:Label text="Employee Name"></m:Label>
+                            <m:Input value="{JSONModel>/SelectedEmployee/EMP_NAME}"></m:Input>
+						</blocks>
+                        <blocks>
+							
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+			<ObjectPageSection titleUppercase="false" title="Resume" >
+				<subSections>
+					<ObjectPageSubSection id="personalSectionSS1" title="Resume" titleUppercase="false">
+						<blocks>
+                            <m:Text text="Delevoped by Kurvesh Patel"></m:Text>
+						</blocks>
+			        </ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+		</sections>
+		<footer>
+			<m:OverflowToolbar>
+				<m:ToolbarSpacer />
+				<m:Button type="Accept" text="Accept"/>
+				<m:Button type="Reject" text="Reject"/>
+			</m:OverflowToolbar>
+		</footer>
+	</ObjectPageLayout>
 
     </mvc:View>
