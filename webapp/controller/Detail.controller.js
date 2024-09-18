@@ -1,10 +1,14 @@
 sap.ui.define([
     "./App.controller",
     "sap/ui/model/json/JSONModel",
-    "../model/models"
+    "../model/models",
+    'sap/ui/export/library',
+	'sap/ui/export/Spreadsheet',
 ],
-    function (BaseController, JSONModel, Models) {
+    function (BaseController, JSONModel, Models, exportLibrary, Spreadsheet) {
         "use strict";
+
+        var EdmType = exportLibrary.EdmType;
 
         return BaseController.extend("zhrmgmtui5.controller.Detail", {
 
@@ -73,19 +77,70 @@ sap.ui.define([
                 };
                 reader.readAsDataURL(oFile);
             },
+            
 
-            // onReadProject : function(){
-            //     var oModel = this.getModel();
-            //     oModel.read("/PROJECT",{
-            //         success:function(odata){
-            //             debugger;
-            //             this.getModel("JSONModel").setProperty("/Project",odata.results)
-            //         }.bind(this),
-            //         error:function(error){
-            //             debugger;
-            //         }
-            //     });
-            // }
+            onUpload : function(oEvent){
 
+            },
+
+            createColumnConfig: function() {
+                var aCols = [];
+    
+               
+    
+                aCols.push({
+                    label: 'PRJ_ID',
+                    type: EdmType.Number,
+                    property: 'PRJ_ID',
+                    scale: 0
+                });
+    
+                aCols.push({
+                    property: 'PRJ_NAME',
+                    type: EdmType.String
+                });
+    
+                aCols.push({
+                    property: 'PRJ_BUDGET',
+                    type: EdmType.String
+                });
+    
+                aCols.push({
+                    property: 'EMP_EMP_ID',
+                    type: EdmType.Number
+                });
+    
+                return aCols;
+            },
+    
+    
+
+            onDownload : function(oEvent){
+                var aCols, oRowBinding, oSettings, oSheet, oTable;
+    
+                if (!this._oTable) {
+                    this._oTable = this.byId('exportTable');
+                }
+    
+                oTable = this._oTable;
+                oRowBinding = oTable.getBinding('items');
+                aCols = this.createColumnConfig();
+    
+                oSettings = {
+                    workbook: {
+                        columns: aCols,
+                        hierarchyLevel: 'Level'
+                    },
+                    dataSource: oRowBinding,
+                    fileName: 'Projects.xlsx',
+                    worker: false // We need to disable worker because we are using a MockServer as OData Service
+                };
+    
+                oSheet = new Spreadsheet(oSettings);
+                oSheet.build().finally(function() {
+                    oSheet.destroy();
+                });
+            }
+           
         });
     });

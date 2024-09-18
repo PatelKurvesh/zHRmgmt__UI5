@@ -6,6 +6,8 @@ sap.ui.define([
     function (BaseController, MessageToast, Models) {
         "use strict";
 
+        
+
         return BaseController.extend("zhrmgmtui5.controller.View1", {
             onInit: function () {
                 this.getModel().setUseBatch(false);
@@ -235,7 +237,6 @@ sap.ui.define([
             },
 
             onUpdateFinished: function (oEvent) {
-                debugger;
                 var iTableCount = oEvent.getSource().getMaxItemsCount();
                 this.setProperty("/iCount", iTableCount);
             },
@@ -251,7 +252,10 @@ sap.ui.define([
                 var iEmployeeId = oSelectedEmployee.EMP_ID;
                 await this.readDataWithParameter("/EMPLOYEE", "/SelectedEmployee", aFilters,"EMP_MODULE,EMP_CV,EMP_PRJ");
                 this.getRouter().navTo("Detail", { Id: iEmployeeId });
+                oEvent.mParameters.listItem.setSelected(false);
             },
+
+
 
             
 

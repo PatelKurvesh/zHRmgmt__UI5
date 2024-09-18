@@ -99,7 +99,7 @@
                 </m:HBox>      
             </form:SimpleForm>
                        
-            <m:Table id="purchaseOrderTable" items="{JSONModel>/Project}" autoPopinMode="true" updateFinished="onUpdateFinished"
+            <m:Table id="exportTable" items="{JSONModel>/Project}" autoPopinMode="true" updateFinished="onUpdateFinished"
             mode="SingleSelectMaster" selectionChange="onPOTableItemSelectionChange" >
                 <m:headerToolbar>
                     <m:OverflowToolbar>
