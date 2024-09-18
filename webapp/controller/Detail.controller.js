@@ -113,9 +113,7 @@ sap.ui.define([
                 return aCols;
             },
     
-    
-
-            onDownload : function(oEvent){
+            onDownload : function(){
                 var aCols, oRowBinding, oSettings, oSheet, oTable;
     
                 if (!this._oTable) {
