@@ -29,6 +29,8 @@ sap.ui.define([
 
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
+
+                sap.ui.getCore().applyTheme("sap_fiori_3_dark");
             }
         });
     }

@@ -55,7 +55,8 @@
       "desktop": true,
       "tablet": true,
       "phone": true
-    }
+    },
+    "supportedThemes": ["sap_horizon_dark"]
   },
   "sap.ui5": {
     "flexEnabled": false,
@@ -69,7 +70,9 @@
         "sap.ui.comp": {},
         "sap.ui.generic.app": {},
         "sap.ui.table": {},
-        "sap.ushell": {}
+        "sap.ushell": {},
+				"sap.ui.fl": {},
+				"sap.ui.mdc": {}
       }
     },
     "contentDensities": {
@@ -121,7 +124,7 @@
         },
         {
           "name": "Detail",
-          "pattern": "Employee({Id})",
+          "pattern": "Employee/{Id}",
           "target": [
             "Detail"
           ]

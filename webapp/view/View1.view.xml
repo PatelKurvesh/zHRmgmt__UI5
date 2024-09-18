@@ -5,10 +5,12 @@
     xmlns="sap.m"
     xmlns:filterbar="sap.ui.comp.filterbar"
     xmlns:core="sap.ui.core"
+    xmlns:mdc="sap.ui.mdc"
+    	xmlns:mdct="sap.ui.mdc.table"
 >
     <Page
         id="page"
-        title="{i18n>title}"
+        title="{i18n>title}" showHeader="false"
     >
         <content>
             <filterbar:FilterBar
@@ -44,10 +46,10 @@
                         visible="{=${JSONModel>/bVisible} ? true:false}"
                     >
                         <filterbar:control>
-                            <ComboBox
+                            <ComboBox id="filterbar2"
                                 items="{JSONModel>/Module}"
                                 placeholder="Select SAP Module"
-                                selectionChange="onProjectChange"
+                                selectionChange="onSelectedModule"
                             >
                                 <core:Item
                                     key="{JSONModel>MODULE_ID}"
@@ -72,9 +74,11 @@
                 selectionChange="onSelectionChange"
                 updateFinished="onUpdateFinished"
                 mode="SingleSelectMaster"
+                
             >
                 <headerToolbar>
                     <OverflowToolbar>
+                        <!-- <Title text="Employee ( {JSONModel>/iCount} )" /> -->
                         <Title text="Employee ( {JSONModel>/iCount}/{JSONModel>/iEmpCount} )" />
                         <ToolbarSpacer />
                         <!-- <Button
@@ -124,6 +128,15 @@
                     </ColumnListItem>
                 </items>
             </Table>
+
+
+
+
+            
+
+
+
+            
         </content>
         <footer>
             <OverflowToolbar>

@@ -77,10 +77,63 @@
 				<subSections>
 					<ObjectPageSubSection>
 						<blocks>
-							<m:Text text="Delevoped by Kurvesh Patel"></m:Text>
-
-                            <m:Label text="Employee Name"></m:Label>
-                            <m:Input value="{JSONModel>/SelectedEmployee/EMP_NAME}"></m:Input>
+							<form:SimpleForm >
+                <m:HBox>
+                    <m:VBox width="50%" class="sapUiTinyMarginBegin">
+                        <m:Label text="Employee Id:"/>
+                        <m:Text text="{JSONModel>/SelectedEmployee/EMP_ID}" class="sapUiSmallMarginBottom"/>
+                        <m:Label text="Employee Name:"/>
+                        <m:Text text="{JSONModel>/SelectedEmployee/EMP_NAME}" class="sapUiSmallMarginBottom"/>
+                        <m:Label text="Module:"/>
+                        <m:Text text="{JSONModel>/SelectedEmployee/EMP_MODULE/MODULE_NAME} ( {JSONModel>/SelectedEmployee/EMP_MODULE/MODULE_ID} ) " class="sapUiSmallMarginBottom"/>
+                    </m:VBox>
+                    <m:VBox width="50%" class="sapUiLargeMarginBegin">
+                        <m:Label text="Created By:"/>
+                        <m:Text text="{JSONModel>/SelectedEmployee/createdBy}" class="sapUiSmallMarginBottom"/>            
+                        <m:Label text="Modified By:"/>
+                        <m:Text text="{JSONModel>/SelectedEmployee/modifiedBy}" class="sapUiSmallMarginBottom"/>
+                         <m:Label text="Created At:"/>
+						 <!-- <m:Text text="{JSONModel>/SelectedEmployee/createdAt}" class="sapUiSmallMarginBottom"/> -->
+                        <m:Text text="{path : 'JSONModel>/SelectedEmployee/createdAt', type:'sap.ui.model.type.Date', formatOptions: { source : { pattern: 'yyyy-MM-ddTHH:mm:ss.SSSX' }, pattern: 'dd.MM.yyyy' } } "/>
+                    </m:VBox>
+                </m:HBox>      
+            </form:SimpleForm>
+                       
+            <m:Table id="purchaseOrderTable" items="{JSONModel>/Project}" autoPopinMode="true" updateFinished="onUpdateFinished"
+            mode="SingleSelectMaster" selectionChange="onPOTableItemSelectionChange" >
+                <m:headerToolbar>
+                    <m:OverflowToolbar>
+                        <m:Title text="Projects ({JSONModel>/iCount})"/>
+						<m:ToolbarSpacer/>
+						<m:MenuButton icon="sap-icon://excel-attachment" type="Emphasized">
+							<m:menu>
+								<m:Menu>
+									<m:MenuItem text="Download" icon="sap-icon://download" press="onDownload"/>
+									<m:MenuItem text="Upload" icon="sap-icon://upload" press="onUpload" />
+								</m:Menu>
+							</m:menu>
+						</m:MenuButton>
+                    </m:OverflowToolbar>
+                </m:headerToolbar>
+                <m:columns>
+				<m:Column>
+                        <m:Label text="ID"/>
+                    </m:Column>
+                     <m:Column>
+                        <m:Label text="Name"/>
+                    </m:Column>
+					<m:Column>
+                        <m:Label text="Budget"/>
+                    </m:Column>
+                </m:columns>
+                <m:ColumnListItem type="Navigation">
+                 
+                    <m:Text text="{JSONModel>PRJ_ID}"/>
+                    <m:Text text="{JSONModel>PRJ_NAME}"/>
+                    <m:Text text="{JSONModel>PRJ_BUDGET}"/>
+                </m:ColumnListItem>
+            </m:Table>
+ 
 						</blocks>
                         <blocks>
 							
@@ -93,7 +146,30 @@
 				<subSections>
 					<ObjectPageSubSection id="personalSectionSS1" title="Resume" titleUppercase="false">
 						<blocks>
-                            <m:Text text="Delevoped by Kurvesh Patel"></m:Text>
+							 <upload:UploadSet
+							 			id="uploadSet"
+                                        showIcons="true"
+                                        uploadEnabled="true"
+                                        terminationEnabled="true"
+                                        fileTypes="txt,doc,png,pdf"
+                                        maxFileNameLength="30"
+                                        maxFileSize="200"
+                                        mode="MultiSelect"
+                                        beforeUploadStarts="onBeforeUploadStarts"
+                                        afterItemAdded="onAfterItemAdded"
+                                        selectionChanged="onFileSelectionChange"
+                                        uploadUrl="/v2/odata"
+										items="{JSONModel>/Resume}"
+                                    >
+                                        <upload:items>
+                                            <upload:UploadSetItem 
+                                                fileName="{JSONModel>FILE_NAME}"
+                                                mediaType="{JSONModel>MEDIA_TYPE}"
+                                                url="{JSONModel>URL}"
+                                                openPressed="onLinkPressed"
+                                            />
+                                        </upload:items>
+                                    </upload:UploadSet>
 						</blocks>
 			        </ObjectPageSubSection>
 				</subSections>

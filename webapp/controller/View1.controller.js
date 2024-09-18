@@ -10,13 +10,16 @@ sap.ui.define([
             onInit: function () {
                 this.getModel().setUseBatch(false);
                 this.getModel("JSONModel").setProperty("/bVisible", false);
-                this.readEmployee();
+                // this.getView().byId("projectTable").setVisible(false);
+                // this.readEmployee();
                 this.readModuleDropDown();
-                this.readEmployeeCount()
+                // this.readEmployeeCount()
             },
 
             onModuleTypeChange: function (oEvent) {
                 debugger;
+                this.byId("filterbar2").setBusyIndicatorDelay(0);
+                this.byId("filterbar2").setBusy(true);
                 var sModule = oEvent.mParameters.selectedItem.getText();
                 this.getModel("JSONModel").setProperty("/bVisible", true);
                 var oModel = this.getModel();
@@ -27,14 +30,16 @@ sap.ui.define([
                     success: function (odata) {
                         this.getModel("JSONModel").setProperty("/Module", odata.results);
                         MessageToast.show("oData Working Properly!")
+                        this.byId("filterbar2").setBusy(false);
                     }.bind(this),
                     error: function (error) {
-                        MessageToast.show("oData Service Not Working!!")
+                        // MessageToast.show("oData Service Not Working!!")
+                        sap.m.MessageBox.error("oData Not Working Properly!!!");
                     }
                 })
             },
 
-            readModuleDropDown: function () {
+            readModuleDropDown: function (oEvent) {
                 var oModel = this.getModel();
                 oModel.read("/MODULE", {
                     success: function (odata) {
@@ -42,19 +47,50 @@ sap.ui.define([
                         MessageToast.show("oData Working Properly!")
                     }.bind(this),
                     error: function (error) {
-                        // MessageToast.show("oData Service Not Working!!")
+                        sap.m.MessageBox.error("oData Not Working Properly!!!");
                     }
                 })
             },
 
+            onSelectedModule : function(oEvent){
+                this.byId("projectTable").setBusyIndicatorDelay(0);
+                this.byId("projectTable").setBusy(true);
+                var oSelectedItem = oEvent.mParameters.selectedItem;
+                this.oSelectedModule = oSelectedItem.getBindingContext("JSONModel").getObject()
+                this.getModel("JSONModel").setProperty("/SelecetdModule", [this.oSelectedModule]);
+                var oModuleFilter = this.getFilter("EMP_MODULE_MODULE_ID",sap.ui.model.FilterOperator.EQ, this.oSelectedModule.MODULE_ID);
+                this.readEmployeeCount()
+                this.getModel().read("/EMPLOYEE", {
+                    filters: [oModuleFilter],
+                    "urlParameters": {
+                        "$top": 5
+                    },
+                    success: function (oData) {
+                        var oJSONModel = this.getModel("JSONModel");
+                        this.byId("projectTable").setBusy(false);
+                        oJSONModel.setProperty("/Employee", oData.results);
+                        oJSONModel.setProperty("/thresholdCount", oData.results.length);
+                        // this.getModel("JSONModel").setProperty("/Employee", oData.results);
+                        this.getView().byId("projectTable").setVisible(true);
+                        sap.m.MessageToast.show("Employee data loaded sucessfully");
+                    }.bind(this),
+                    error: function (oError) {
+                        
+                    }
+                });
+
+            },
+
             readEmployeeCount: function () {
                 var oModel = this.getModel();
+                var oModuleFilter = this.getFilter("EMP_MODULE_MODULE_ID",sap.ui.model.FilterOperator.EQ, this.oSelectedModule.MODULE_ID);
                 oModel.read("/EMPLOYEE/$count", {
+                    filters: [oModuleFilter],
                     success: function (odata) {
                         this.getModel("JSONModel").setProperty("/iEmpCount", odata);
                     }.bind(this),
                     error: function (error) {
-                        MessageToast.show("oData Service Not Working!!")
+                        sap.m.MessageBox.error("oData Not Working Properly!!!");
                     }
                 })
             },
@@ -200,10 +236,6 @@ sap.ui.define([
 
             onUpdateFinished: function (oEvent) {
                 debugger;
-                // var aEmployee = this.getModel("JSONModel").getProperty("/Employee");
-                // if(aEmployee && aEmployee !== undefined){
-                //     oEvent.getSource().setVisible(true);
-                // }
                 var iTableCount = oEvent.getSource().getMaxItemsCount();
                 this.setProperty("/iCount", iTableCount);
             },
@@ -217,7 +249,7 @@ sap.ui.define([
                 var oEmployeeFilter = this.getFilter("EMP_ID", sap.ui.model.FilterOperator.EQ, oSelectedEmployee.EMP_ID);
                 aFilters.push(oEmployeeFilter);
                 var iEmployeeId = oSelectedEmployee.EMP_ID;
-                await this.readDataWithParameter("/EMPLOYEE", "/SelectedEmployee", aFilters);
+                await this.readDataWithParameter("/EMPLOYEE", "/SelectedEmployee", aFilters,"EMP_MODULE,EMP_CV,EMP_PRJ");
                 this.getRouter().navTo("Detail", { Id: iEmployeeId });
             },
 
