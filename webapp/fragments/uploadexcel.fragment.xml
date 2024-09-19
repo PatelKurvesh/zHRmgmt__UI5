@@ -1,0 +1,48 @@
+<core:FragmentDefinition xmlns:upload="sap.m.upload" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:u="sap.ui.unified">
+    <Dialog  contentWidth="100%" horizontalScrolling="false" draggable="false" >
+        <content>
+      <layout:Grid defaultSpan="XL12 L12 M12 S12">
+     <Table width="auto" mode="None" items="{path:'JSONModel>/ExcelData'}"
+     sticky="HeaderToolbar,ColumnHeaders" noDataText="No projects found...">
+        <headerToolbar>
+            <Toolbar>
+                <Title text="Upload Projects" />
+                <ToolbarSpacer />
+ 
+            </Toolbar>
+        </headerToolbar>
+         <columns>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="Project Id" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="Name" />
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="Budget" />
+            </Column>
+			 <Column minScreenWidth="Tablet" demandPopin="true">
+                <Text text="Employee Id" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem type="Active" press=".onPressAction($event,'display')" vAlign="Middle">
+                <cells>
+                    <Input value="{JSONModel>PRJ_ID}" editable="false" />
+                    <Input value="{JSONModel>PRJ_NAME}" editable="false"/>
+                    <Input value="{JSONModel>PRJ_BUDGET}" editable="false"/>
+					<Input value="{JSONModel>EMP_EMP_ID}" editable="false"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+   
+     </layout:Grid>
+        </content>
+       
+        <buttons>
+            <Button type="Emphasized" text="Save" icon="sap-icon://save" press="OnSaveExcelData" />
+            <Button text="Cancel" press="onCancelExcelData" icon="sap-icon://decline" type="Reject"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

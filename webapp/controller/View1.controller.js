@@ -20,6 +20,7 @@ sap.ui.define([
 
             onModuleTypeChange: function (oEvent) {
                 debugger;
+                this.byId("filterbar2").setValue("");
                 this.byId("filterbar2").setBusyIndicatorDelay(0);
                 this.byId("filterbar2").setBusy(true);
                 var sModule = oEvent.mParameters.selectedItem.getText();
@@ -41,7 +42,8 @@ sap.ui.define([
                 })
             },
 
-            readModuleDropDown: function (oEvent) {
+            readModuleDropDown: function () {
+                
                 var oModel = this.getModel();
                 oModel.read("/MODULE", {
                     success: function (odata) {
@@ -72,8 +74,6 @@ sap.ui.define([
                         this.byId("projectTable").setBusy(false);
                         oJSONModel.setProperty("/Employee", oData.results);
                         oJSONModel.setProperty("/thresholdCount", oData.results.length);
-                        // this.getModel("JSONModel").setProperty("/Employee", oData.results);
-                        this.getView().byId("projectTable").setVisible(true);
                         sap.m.MessageToast.show("Employee data loaded sucessfully");
                     }.bind(this),
                     error: function (oError) {

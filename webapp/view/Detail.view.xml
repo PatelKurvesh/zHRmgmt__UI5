@@ -7,7 +7,8 @@
     xmlns:semantic="sap.f.semantic"
 	xmlns:form="sap.ui.layout.form"
 	xmlns:layout="sap.ui.layout"
-	xmlns:upload="sap.m.upload">
+	xmlns:upload="sap.m.upload"
+	xmlns:u="sap.ui.unified">
 
      <ObjectPageLayout id="ObjectPageLayout"
 		showTitleInHeaderContent="true"
@@ -105,14 +106,26 @@
                     <m:OverflowToolbar>
                         <m:Title text="Projects ({JSONModel>/iCount})"/>
 						<m:ToolbarSpacer/>
-						<m:MenuButton icon="sap-icon://excel-attachment" type="Emphasized">
+						<m:Button text="Export" icon="sap-icon://download" press="onDownload"/>
+						 <u:FileUploader
+							buttonOnly="true"
+							id="fileUploader2"
+							change="handleDialogUploadPress"
+							name="myFileUpload"
+							fileType="xlsx,xls"
+							buttonText="Upload"
+							icon="sap-icon://upload"
+							uploadUrl="https://a599057ctrial-dev-zhrmgmt--odata-srv.cfapps.us10-001.hana.ondemand.com/v2/odata/EMPLOYEE"
+							tooltip="Upload your file to the local server"
+							uploadComplete="handleUploadComplete"/>
+						<!-- <m:MenuButton icon="sap-icon://excel-attachment" type="Emphasized">
 							<m:menu>
 								<m:Menu>
 									<m:MenuItem text="Download" icon="sap-icon://download" press="onDownload"/>
 									<m:MenuItem text="Upload" icon="sap-icon://upload" press="onUpload" />
 								</m:Menu>
 							</m:menu>
-						</m:MenuButton>
+						</m:MenuButton> -->
                     </m:OverflowToolbar>
                 </m:headerToolbar>
                 <m:columns>

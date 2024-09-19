@@ -3,9 +3,11 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "../model/models",
     'sap/ui/export/library',
-	'sap/ui/export/Spreadsheet',
+    'sap/ui/export/Spreadsheet',
+    'zhrmgmtui5/libs/jszip',
+    'zhrmgmtui5/libs/xlsx'
 ],
-    function (BaseController, JSONModel, Models, exportLibrary, Spreadsheet) {
+    function (BaseController, JSONModel, Models, exportLibrary, Spreadsheet, jszip, XLSX) {
         "use strict";
 
         var EdmType = exportLibrary.EdmType;
@@ -23,7 +25,6 @@ sap.ui.define([
             },
 
             onUpdateFinished: function (oEvent) {
-                debugger;
                 var iTableCount = oEvent.getSource().getMaxItemsCount();
                 this.setProperty("/iCount", iTableCount);
             },
@@ -62,7 +63,7 @@ sap.ui.define([
                             debugger;
                             var oJSONModel = this.getModel("JSONModel");
                             this.byId("uploadSet").removeAllItems();
-                            oJSONModel.setProperty("/Resume",[oData]);
+                            oJSONModel.setProperty("/Resume", [oData]);
                             oJSONModel.refresh();
                             this.byId("uploadSet").setBusy(false);
                             sap.m.MessageBox.success("Resume added successfully!!");
@@ -77,53 +78,96 @@ sap.ui.define([
                 };
                 reader.readAsDataURL(oFile);
             },
-            
 
-            onUpload : function(oEvent){
 
+            onUpload: function () {
+                if (!this.Dialog) {
+                    this.Dialog = sap.ui.xmlfragment("zhrmgmtui5.fragments.uploadexcel", this);
+                    this.getView().addDependent(this.Dialog);
+                    this.Dialog.open();
+                }
+                else {
+                    this.Dialog.open();
+                }
             },
 
-            createColumnConfig: function() {
+            onCancelExcelData: function(){
+                this.byId("fileUploader2").setValue("");
+                this.Dialog.close();
+                if (this.Dialog) {
+                    this.Dialog.destroy();
+                    this.Dialog = null;
+                }
+            },
+
+
+            handleDialogUploadPress: function (oEvent) {
+                debugger;
+                var oFileUploader = this.byId("fileUploader2");
+            
+                var oFile = oFileUploader.oFileUpload.files[0]; 
+                if (oFile) {
+                    var reader = new FileReader();
+                    reader.onload = (e) => {                        
+                            var data = e.target.result;
+                            var workbook = XLS.read(data, { type: "binary" });
+
+                            var sheetName = workbook.SheetNames[0];
+                            var sheet = workbook.Sheets[sheetName];
+
+                            var aExcelData = XLS.utils.sheet_to_row_object_array(sheet);
+                            this.getModel("JSONModel").setProperty("/ExcelData",aExcelData);
+                            this.onUpload();
+                    };
+                    reader.readAsBinaryString(oFile);
+                }
+                else {
+                    MessageToast.show("Please Add Your Image");
+                }
+
+
+            },
+            createColumnConfig: function () {
                 var aCols = [];
-    
-               
-    
+
+
+
                 aCols.push({
                     label: 'PRJ_ID',
                     type: EdmType.Number,
                     property: 'PRJ_ID',
                     scale: 0
                 });
-    
+
                 aCols.push({
                     property: 'PRJ_NAME',
                     type: EdmType.String
                 });
-    
+
                 aCols.push({
                     property: 'PRJ_BUDGET',
                     type: EdmType.String
                 });
-    
+
                 aCols.push({
                     property: 'EMP_EMP_ID',
                     type: EdmType.Number
                 });
-    
+
                 return aCols;
             },
-    
-            onDownload : function(){
+
+            onDownload: function () {
                 var aCols, oRowBinding, oSettings, oSheet, oTable;
-    
+
                 if (!this._oTable) {
                     this._oTable = this.byId('exportTable');
                 }
-    
+
                 oTable = this._oTable;
                 oRowBinding = oTable.getBinding('items');
                 aCols = this.createColumnConfig();
-    
+
                 oSettings = {
                     workbook: {
                         columns: aCols,
@@ -133,12 +177,12 @@ sap.ui.define([
                     fileName: 'Projects.xlsx',
                     worker: false // We need to disable worker because we are using a MockServer as OData Service
                 };
-    
+
                 oSheet = new Spreadsheet(oSettings);
-                oSheet.build().finally(function() {
+                oSheet.build().finally(function () {
                     oSheet.destroy();
                 });
             }
-           
+
         });
     });
