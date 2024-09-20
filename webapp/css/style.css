@@ -7,3 +7,7 @@
 .circularImg{
     object-fit: cover;
 }
+
+.sapUiSizeCompact .sapUxAPObjectPageSectionTitle, .sapUxAPObjectPageSectionTitle{
+    display: none;
+}

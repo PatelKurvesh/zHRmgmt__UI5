@@ -5,9 +5,10 @@ sap.ui.define([
     'sap/ui/export/library',
     'sap/ui/export/Spreadsheet',
     'zhrmgmtui5/libs/jszip',
-    'zhrmgmtui5/libs/xlsx'
+    'zhrmgmtui5/libs/xlsx',
+    "sap/m/MessageToast",
 ],
-    function (BaseController, JSONModel, Models, exportLibrary, Spreadsheet, jszip, XLSX) {
+    function (BaseController, JSONModel, Models, exportLibrary, Spreadsheet, jszip, XLSX, MessageToast) {
         "use strict";
 
         var EdmType = exportLibrary.EdmType;
@@ -91,7 +92,7 @@ sap.ui.define([
                 }
             },
 
-            onCancelExcelData: function(){
+            onCancelExcelData: function () {
                 this.byId("fileUploader2").setValue("");
                 this.Dialog.close();
                 if (this.Dialog) {
@@ -101,32 +102,95 @@ sap.ui.define([
             },
 
 
+            // handleDialogUploadPress: function (oEvent) {
+            //     debugger;
+            //     var oFileUploader = this.byId("fileUploader2");
+
+            //     var oFile = oFileUploader.oFileUpload.files[0];
+            //     if (oFile) {
+            //         var reader = new FileReader();
+            //         reader.onload = (e) => {
+            //             var data = e.target.result;
+            //             var workbook = XLS.read(data, { type: "binary" });
+
+            //             var sheetName = workbook.SheetNames[0];
+            //             var sheet = workbook.Sheets[sheetName];
+
+            //             var aExcelData = XLS.utils.sheet_to_row_object_array(sheet);
+
+            //             this._saveToOData(aExcelData);
+            //             this.getModel("JSONModel").setProperty("/ExcelData", aExcelData);
+            //             this.onUpload();
+            //         };
+            //         reader.readAsBinaryString(oFile);
+            //     }
+            //     else {
+            //         MessageToast.show("Please Add Your Image");
+            //     }
+
+
+            // },
+
+
             handleDialogUploadPress: function (oEvent) {
-                debugger;
                 var oFileUploader = this.byId("fileUploader2");
+                var oFile = oFileUploader.oFileUpload.files[0];
             
-                var oFile = oFileUploader.oFileUpload.files[0]; 
                 if (oFile) {
                     var reader = new FileReader();
-                    reader.onload = (e) => {                        
-                            var data = e.target.result;
-                            var workbook = XLS.read(data, { type: "binary" });
-
-                            var sheetName = workbook.SheetNames[0];
-                            var sheet = workbook.Sheets[sheetName];
-
-                            var aExcelData = XLS.utils.sheet_to_row_object_array(sheet);
-                            this.getModel("JSONModel").setProperty("/ExcelData",aExcelData);
-                            this.onUpload();
+                    reader.onload = (e) => {
+                        var arrayBuffer = e.target.result;
+            
+                        // Convert ArrayBuffer to binary string
+                        var binaryString = this._arrayBufferToBinaryString(arrayBuffer);
+            
+                        // Process the binary data with XLSX
+                        var workbook = XLS.read(binaryString, { type: "binary" });
+            
+                        var sheetName = workbook.SheetNames[0];
+                        var sheet = workbook.Sheets[sheetName];
+            
+                        var aExcelData = XLS.utils.sheet_to_row_object_array(sheet);
+            
+                        this._saveToOData(aExcelData);
+                        this.getModel("JSONModel").setProperty("/ExcelData", aExcelData);
+                        this.onUpload();
                     };
-                    reader.readAsBinaryString(oFile);
-                }
-                else {
+                    reader.readAsArrayBuffer(oFile);
+                } else {
                     MessageToast.show("Please Add Your Image");
                 }
-
-
             },
+            
+            // Helper function to convert ArrayBuffer to binary string
+            _arrayBufferToBinaryString: function(buffer) {
+                var binary = '';
+                var bytes = new Uint8Array(buffer);
+                var len = bytes.byteLength;
+                for (var i = 0; i < len; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                return binary;
+            },
+            
+
+            _saveToOData: function (aExcelData) {
+                var oModel = this.getView().getModel();
+
+                // Assuming your OData entity name is 'Employee'
+                aExcelData.forEach(function (oEntry) {
+                    oModel.create("/PROJECT", oEntry, {
+                        success: function (odata) {
+                            MessageToast.show("Data saved successfully");
+                        },
+                        error: function (error) {
+                            MessageToast.show("Error saving data");
+                        }
+                    });
+                });
+            },
+
+
             createColumnConfig: function () {
                 var aCols = [];
 
@@ -182,6 +246,26 @@ sap.ui.define([
                 oSheet.build().finally(function () {
                     oSheet.destroy();
                 });
+            },
+
+
+            OnSaveExcelData: function () {
+                var aExcelData = this.getModel("JSONModel").getProperty("/ExcelData");
+                for (var e in aExcelData) {
+                    var oExcelObj = aExcelData[e];
+                    oExcelObj.PRJ_ID = parseInt(oExcelObj.PRJ_ID);
+                    oExcelObj.EMP_EMP_ID = parseInt(oExcelObj.EMP_EMP_ID);
+                    this.getModel().create("/PROJECT", oExcelObj, {
+                        success: function (odata) {
+                            debugger;
+                            MessageToast.show("Data saved successfully");
+                            this.onCancelExcelData();
+                        }.bind(this),
+                        error: function (error) {
+                            MessageToast.show("Error saving data");
+                        }
+                    });
+                }
             }
 
         });
