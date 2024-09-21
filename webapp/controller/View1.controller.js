@@ -242,6 +242,12 @@ sap.ui.define([
             onUpdateFinished: function (oEvent) {
                 var iTableCount = oEvent.getSource().getMaxItemsCount();
                 this.setProperty("/iCount", iTableCount);
+                var iVisibleEmpCount = this.getModel("JSONModel").getProperty("/iCount");
+                if(iVisibleEmpCount < 5 ){
+                    this.byId("footerbtn").setVisible(false);
+                }else{
+                    this.byId("footerbtn").setVisible(true);
+                }
             },
 
 

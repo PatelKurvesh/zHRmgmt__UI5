@@ -31,7 +31,20 @@ sap.ui.define([
                 this.setModel(models.createDeviceModel(), "device");
 
                 sap.ui.getCore().applyTheme("sap_fiori_3_dark");
-            }
+
+                this.Chatbot();
+            },
+
+            Chatbot: function() {
+                if (!document.getElementById("cai-webchat")) {
+                    var s = document.createElement("script");
+                       s.setAttribute("id", "cai-webchat");
+                      s.setAttribute("src", "https://cdn.cai.tools.sap/webchat/webchat.js");
+                          document.body.appendChild(s);
+                    }
+                    s.setAttribute("channelId", "5d4b041c-4fb4-4687-847c-c9de92867270");
+                    s.setAttribute("token", "c6d94e61cf9ba4fcc23c391242869181");
+            },
         });
     }
 );

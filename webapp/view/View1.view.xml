@@ -6,11 +6,12 @@
     xmlns:filterbar="sap.ui.comp.filterbar"
     xmlns:core="sap.ui.core"
     xmlns:mdc="sap.ui.mdc"
-    	xmlns:mdct="sap.ui.mdc.table"
+    xmlns:mdct="sap.ui.mdc.table"
 >
     <Page
         id="page"
-        title="{i18n>title}" showHeader="false"
+        title="{i18n>title}"
+        showHeader="false"
     >
         <content>
             <filterbar:FilterBar
@@ -46,7 +47,8 @@
                         visible="{=${JSONModel>/bVisible} ? true:false}"
                     >
                         <filterbar:control>
-                            <ComboBox id="filterbar2"
+                            <ComboBox
+                                id="filterbar2"
                                 items="{JSONModel>/Module}"
                                 placeholder="Select SAP Module"
                                 selectionChange="onSelectedModule"
@@ -74,13 +76,13 @@
                 selectionChange="onSelectionChange"
                 updateFinished="onUpdateFinished"
                 mode="SingleSelectMaster"
-                
-                
             >
                 <headerToolbar>
                     <OverflowToolbar>
                         <!-- <Title text="Employee ( {JSONModel>/iCount} )" /> -->
-                        <Title text="Employee ( {JSONModel>/iCount}/{JSONModel>/iEmpCount} )" />
+                        <Title
+                            text="Employee ( {JSONModel>/iCount}/{JSONModel>/iEmpCount} )"
+                        />
                         <ToolbarSpacer />
                         <!-- <Button
                             text="Delete"
@@ -130,35 +132,42 @@
                 </items>
             </Table>
 
-
             <VBox>
-				<core:HTML id="html">
-				</core:HTML>
-			</VBox>
-			<VBox>
-				<HBox>
-<Button id="Signature" text="Signature" press="onSign"> </Button>
-					<Button id="Save" text="Save" press="saveButton"></Button>
-					<Button id="clear" text="Clear" press="clearButton"></Button>
-				</HBox>
-			</VBox>
-
-            
-
-
-
-            
+                <core:HTML id="html" />
+            </VBox>
+            <VBox>
+                <HBox>
+                    <Button
+                        id="Signature"
+                        text="Signature"
+                        press="onSign"
+                    />
+                    <Button
+                        id="Save"
+                        text="Save"
+                        press="saveButton"
+                    />
+                    <Button
+                        id="clear"
+                        text="Clear"
+                        press="clearButton"
+                    />
+                </HBox>
+            </VBox>
         </content>
-        <footer>
-            <OverflowToolbar>
-                <ToolbarSpacer />
-                <Button
-                    icon="sap-icon://drill-down"
-                    text="Load More Employee"
-                    type="Emphasized"
-                    press="onLoadMoreEmployeePress"
-                />
-            </OverflowToolbar>
-        </footer>
+       <footer>
+    <OverflowToolbar>
+        <ToolbarSpacer />
+        <Button 
+        id="footerbtn"
+            icon="sap-icon://drill-down"
+            text="Load More Employee"
+            type="Emphasized"
+            press="onLoadMoreEmployeePress"
+        />
+        <ToolbarSpacer />
+    </OverflowToolbar>
+</footer>
+
     </Page>
 </mvc:View>

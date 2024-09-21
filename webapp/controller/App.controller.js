@@ -39,6 +39,7 @@ sap.ui.define(
             success: function (oData) {
               oData.results[0].createdAt = oData.results[0].createdAt.toISOString();
               oData.results ? this.setProperty(sProperty, oData.results[0]) : this.setProperty(sProperty, oData);
+              
               resolve(oData);
               if (!jQuery.isEmptyObject(oData.results[0].EMP_CV)) {
                 this.setProperty("/Resume", [oData.results[0].EMP_CV]);
