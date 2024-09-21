@@ -202,6 +202,13 @@
                                     />
                                 </upload:items>
                             </upload:UploadSet>
+
+
+
+
+                            
+
+                            
                         </blocks>
                     </ObjectPageSubSection>
                 </subSections>
@@ -285,11 +292,15 @@
                                     <m:Text text="{JSONModel>PRJ_BUDGET}" />
                                 </m:ColumnListItem>
                             </m:Table>
+
+
+                            
                         </blocks>
                     </ObjectPageSubSection>
                 </subSections>
             </ObjectPageSection>
         </sections>
+<!--         
         <footer>
             <m:OverflowToolbar>
                 <m:ToolbarSpacer />
@@ -302,6 +313,9 @@
                     text="Reject"
                 />
             </m:OverflowToolbar>
-        </footer>
+        </footer> -->
     </ObjectPageLayout>
+
+
+    
 </mvc:View>

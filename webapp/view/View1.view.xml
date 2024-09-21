@@ -131,7 +131,17 @@
             </Table>
 
 
-
+            <VBox>
+				<core:HTML id="html">
+				</core:HTML>
+			</VBox>
+			<VBox>
+				<HBox>
+<Button id="Signature" text="Signature" press="onSign"> </Button>
+					<Button id="Save" text="Save" press="saveButton"></Button>
+					<Button id="clear" text="Clear" press="clearButton"></Button>
+				</HBox>
+			</VBox>
 
             
 

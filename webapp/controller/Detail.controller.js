@@ -181,6 +181,8 @@ sap.ui.define([
                 aExcelData.forEach(function (oEntry) {
                     oModel.create("/PROJECT", oEntry, {
                         success: function (odata) {
+                            var aProjects = this.getModel("JSONModel").getProperty("/Project");
+                            aProjects.push(odata);
                             MessageToast.show("Data saved successfully");
                         },
                         error: function (error) {
